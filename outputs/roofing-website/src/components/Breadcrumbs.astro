@@ -1,0 +1,18 @@
+---
+import JsonLd from './JsonLd.astro';
+import { breadcrumbs } from '../lib/schema';
+interface Props { items: { name: string; path: string }[] }
+const items = [{ name: 'Home', path: '/' }, ...Astro.props.items];
+---
+<nav class="crumbs small" aria-label="Breadcrumb">
+  {items.map((item, i) => (
+    i < items.length - 1
+      ? <><a href={item.path}>{item.name}</a><span aria-hidden="true"> / </span></>
+      : <span aria-current="page">{item.name}</span>
+  ))}
+</nav>
+<JsonLd data={breadcrumbs(items)} />
+<style>
+  .crumbs { padding-top: 18px; color: var(--ink-soft); }
+  .crumbs a { color: var(--ink-soft); }
+</style>

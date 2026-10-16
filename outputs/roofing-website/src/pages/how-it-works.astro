@@ -1,0 +1,51 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import QuickAnswer from '../components/QuickAnswer.astro';
+import Faq from '../components/Faq.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { SITE } from '../config';
+
+const faqs = [
+  { q: `How does ${SITE.name} make money?`, a: 'The roofing company pays us a fee for introducing customers. You never pay us anything.' },
+  { q: 'Are you a roofing company?', a: `No. ${SITE.name} is an introduction service. The roofer you're put in touch with does the survey, quotes and carries out the work, and your contract is with them.` },
+  { q: 'What if something goes wrong with the work?', a: 'Your contract and any guarantee are with the roofing company, so raise it with them first. If you are not getting anywhere, tell us. We stop working with roofers who do not treat customers fairly.' },
+];
+---
+<BaseLayout
+  title={`How It Works | ${SITE.name}`}
+  description="How our free roofing quote service works, how we make money, the checks we make on roofers and what happens to your details."
+>
+  <div class="wrap">
+    <Breadcrumbs items={[{ name: 'How it works', path: '/how-it-works/' }]} />
+    <div class="page-head"><h1>How it works</h1></div>
+    <QuickAnswer text={`You tell us about your roofing job, we pass your enquiry to one checked local roofer the same working day, and they contact you to arrange a free survey and written quote. It's free for you because the roofer pays us a fee.`} />
+    <div class="prose">
+      <h2>1. Tell us about the job</h2>
+      <p>The <a href="/get-a-quote/">quote form</a> asks what you need, how urgent it is, what type of property it is, your postcode and how to reach you. It takes about a minute. The more detail you give, the more useful the first call from the roofer will be.</p>
+      <h2>2. We pass it to one local roofer</h2>
+      <p>We read every enquiry and pass it to a roofer who covers your area, the same working day. Emergencies are flagged as urgent. We share your details with that one company only. We don't sell them on, and you won't be called by a string of firms.</p>
+      <h2>3. You get a free, written quote</h2>
+      <p>The roofer calls you, usually visits to look at the roof, and gives you a written price. There's no obligation. If you go ahead, you deal with the roofer directly.</p>
+
+      <h2>The checks we make on roofers</h2>
+      <p>Before we pass enquiries to a roofing company, we check that they:</p>
+      <ul class="tick-list">
+        <li>hold current public liability insurance</li>
+        <li>give written, itemised quotes before starting work</li>
+        <li>offer a written guarantee on their workmanship</li>
+        <li>don't ask for large payments up front</li>
+        <li>have genuine reviews from past customers</li>
+      </ul>
+      <p>If customers tell us a roofer hasn't treated them fairly, we stop working with that roofer.</p>
+
+      <h2>How we make money</h2>
+      <p>The roofing company pays us a fee for each introduction. That's how we keep the service free for you. We'd rather tell you that upfront.</p>
+
+      <h2>Your details</h2>
+      <p>We only use your details to pass your enquiry to one roofer and to keep a record of it. Full details are in our <a href="/privacy/">privacy policy</a>.</p>
+      <Faq faqs={faqs} />
+    </div>
+  </div>
+  <CtaBand />
+</BaseLayout>

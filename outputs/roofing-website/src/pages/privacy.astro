@@ -1,0 +1,42 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { SITE } from '../config';
+import { ukDate } from '../lib/schema';
+const who = SITE.operatorName ? `${SITE.name} (run by ${SITE.operatorName})` : SITE.name;
+---
+<BaseLayout title={`Privacy Policy | ${SITE.name}`} description={`How ${SITE.name} collects, uses and shares your personal information when you ask for a roofing quote.`}>
+  <div class="wrap">
+    <Breadcrumbs items={[{ name: 'Privacy policy', path: '/privacy/' }]} />
+    <div class="prose page-head">
+      <h1>Privacy policy</h1>
+      <p class="muted">Last updated {ukDate(new Date(SITE.lastReviewed))}</p>
+      <p>This policy explains what {who} does with your personal information. In data protection terms, we are the "controller" of the information you give us.</p>
+
+      <h2>What we collect</h2>
+      <p>When you fill in our quote form we collect: your name, phone number, email address (if given), postcode, details about your property and the roofing job, and your preferred time to be called. We also record the page you sent the form from.</p>
+      <p>We don't use advertising or tracking cookies. If we measure visits to the site, we use privacy-friendly analytics that don't identify you personally.</p>
+
+      <h2>How we use it and why</h2>
+      <ul>
+        <li><strong>To get you a quote.</strong> We pass your details to one local roofing company so they can contact you. We do this because you ask us to and tick the consent box on the form.</li>
+        <li><strong>To keep a record.</strong> We keep a record of enquiries we pass on, so we can manage our arrangement with the roofer and deal with any problems. This is in our legitimate interests.</li>
+        <li><strong>To reply to you.</strong> If you gave an email address, we may send you a confirmation that we've received your enquiry.</li>
+      </ul>
+      <p>We never sell your details or pass them to anyone else for marketing.</p>
+
+      <h2>Who we share it with</h2>
+      <p>Your details are shared with <strong>one</strong> local roofing company. Our form records and emails are handled by Google (Google Sheets and Gmail), and the website is hosted by Cloudflare. These providers act on our instructions.</p>
+
+      <h2>How long we keep it</h2>
+      <p>We keep enquiry records for up to 2 years, then delete them, unless we need them longer to deal with a complaint.</p>
+
+      <h2>Your rights</h2>
+      <p>You can ask to see the information we hold about you, ask us to correct or delete it, or withdraw your consent at any time. Withdrawing consent doesn't affect anything we did before. To do any of this, contact us using the details below.</p>
+      <p>If you're unhappy with how we've handled your information, you can complain to the Information Commissioner's Office (ICO) at <a href="https://ico.org.uk/make-a-complaint/" rel="noopener" target="_blank">ico.org.uk</a> or on 0303 123 1113.</p>
+
+      <h2>Contact us</h2>
+      <p>Call or text <a href={`tel:${SITE.phoneLink}`}>{SITE.phoneDisplay}</a>{SITE.contactEmail && <>, or email <a href={`mailto:${SITE.contactEmail}`}>{SITE.contactEmail}</a></>}.</p>
+    </div>
+  </div>
+</BaseLayout>

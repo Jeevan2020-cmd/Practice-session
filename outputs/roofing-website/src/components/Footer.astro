@@ -1,0 +1,51 @@
+---
+import Logo from './Logo.astro';
+import { SITE, SERVICES } from '../config';
+const year = new Date().getFullYear();
+---
+<footer class="site-footer">
+  <div class="wrap cols">
+    <div>
+      <Logo />
+      <p class="small about">
+        {SITE.name} is a free quote service, not a roofing company. We pass your enquiry to a checked local roofer,
+        who contacts you to arrange a quote. It costs you nothing: the roofer pays us a fee.
+      </p>
+      <p><a class="phone" href={`tel:${SITE.phoneLink}`}>Call or text {SITE.phoneDisplay}</a></p>
+    </div>
+    <nav aria-label="Services">
+      <h2>Services</h2>
+      {SERVICES.map((s) => <a href={`/${s.slug}/`}>{s.name}</a>)}
+    </nav>
+    <nav aria-label="Areas and guides">
+      <h2>Areas</h2>
+      <a href="/">Birmingham</a>
+      <a href="/areas/sutton-coldfield/">Sutton Coldfield</a>
+      <a href="/areas/four-oaks/">Four Oaks</a>
+      <h2>Advice</h2>
+      <a href="/guides/">All cost guides</a>
+      <a href="/guides/roof-leaking-what-to-do/">Roof leaking? What to do</a>
+    </nav>
+    <nav aria-label="About">
+      <h2>About</h2>
+      <a href="/how-it-works/">How it works</a>
+      <a href="/about/">About us</a>
+      <a href="/privacy/">Privacy policy</a>
+      <a href="/terms/">Terms</a>
+    </nav>
+  </div>
+  <div class="wrap legal small">© {year} {SITE.name}. Covering Birmingham and Sutton Coldfield.</div>
+</footer>
+<style>
+  .site-footer { background: var(--slate); color: #d7dde5; margin-top: 64px; padding: 48px 0 24px; }
+  .site-footer :global(.logo), .site-footer :global(.logo span) { color: #fff; }
+  .cols { display: grid; gap: 28px; }
+  @media (min-width: 800px) { .cols { grid-template-columns: 1.6fr 1fr 1fr 1fr; } }
+  .site-footer h2 { color: #fff; font-size: 0.95rem; margin: 0 0 10px; text-transform: uppercase; letter-spacing: 0.06em; }
+  .site-footer nav h2:not(:first-child) { margin-top: 22px; }
+  .site-footer nav a { display: block; color: #d7dde5; text-decoration: none; padding: 4px 0; }
+  .site-footer a:hover { color: #fff; }
+  .about { margin-top: 14px; max-width: 34em; }
+  .phone { color: #fff; font-weight: 700; }
+  .legal { border-top: 1px solid var(--slate-2); margin-top: 32px; padding-top: 18px; color: #aab4c0; }
+</style>

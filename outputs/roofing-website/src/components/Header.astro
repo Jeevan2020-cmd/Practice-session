@@ -1,0 +1,49 @@
+---
+import Logo from './Logo.astro';
+import { SITE, SERVICES } from '../config';
+---
+<header class="site-header">
+  <div class="wrap bar">
+    <Logo />
+    <nav class="desktop-nav" aria-label="Main">
+      <a href="/#services">Services</a>
+      <a href="/areas/sutton-coldfield/">Sutton Coldfield</a>
+      <a href="/guides/">Cost guides</a>
+      <a href="/how-it-works/">How it works</a>
+    </nav>
+    <div class="actions">
+      <a class="phone" href={`tel:${SITE.phoneLink}`}>{SITE.phoneDisplay}</a>
+      <a class="btn btn-primary" href="/get-a-quote/">Get a free quote</a>
+    </div>
+    <details class="mobile-nav">
+      <summary aria-label="Menu"><span></span><span></span><span></span></summary>
+      <nav aria-label="Mobile">
+        {SERVICES.map((s) => <a href={`/${s.slug}/`}>{s.name}</a>)}
+        <a href="/areas/sutton-coldfield/">Sutton Coldfield</a>
+        <a href="/areas/four-oaks/">Four Oaks</a>
+        <a href="/guides/">Cost guides &amp; advice</a>
+        <a href="/how-it-works/">How it works</a>
+        <a class="btn btn-primary" href="/get-a-quote/">Get a free quote</a>
+      </nav>
+    </details>
+  </div>
+</header>
+<style>
+  .site-header { background: #fff; border-bottom: 1px solid var(--line); position: sticky; top: 0; z-index: 50; }
+  .bar { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 68px; }
+  .desktop-nav, .actions { display: none; }
+  .desktop-nav a { color: var(--ink); text-decoration: none; font-weight: 600; margin: 0 10px; white-space: nowrap; }
+  .desktop-nav a:hover { color: var(--brand); }
+  .phone { font-weight: 700; color: var(--slate); text-decoration: none; margin-right: 14px; white-space: nowrap; }
+  .actions .btn { padding: 0.6em 1.1em; }
+  .mobile-nav summary { list-style: none; cursor: pointer; width: 44px; height: 44px; display: grid; place-content: center; gap: 5px; }
+  .mobile-nav summary::-webkit-details-marker { display: none; }
+  .mobile-nav summary span { display: block; width: 24px; height: 2.5px; background: var(--slate); border-radius: 2px; }
+  .mobile-nav nav { position: absolute; left: 0; right: 0; top: 68px; background: #fff; border-bottom: 1px solid var(--line); padding: 8px 16px 20px; display: grid; box-shadow: var(--shadow); }
+  .mobile-nav nav a:not(.btn) { padding: 12px 0; border-bottom: 1px solid var(--line); color: var(--ink); text-decoration: none; font-weight: 600; }
+  .mobile-nav nav .btn { margin-top: 16px; }
+  @media (min-width: 1080px) {
+    .desktop-nav, .actions { display: flex; align-items: center; }
+    .mobile-nav { display: none; }
+  }
+</style>

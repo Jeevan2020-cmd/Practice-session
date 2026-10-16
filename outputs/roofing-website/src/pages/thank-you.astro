@@ -1,0 +1,22 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE } from '../config';
+---
+<BaseLayout title={`Thanks, we've got your enquiry | ${SITE.name}`} description="Your roofing enquiry has been received." noindex>
+  <div class="wrap read box">
+    <h1>Thanks, we've got your enquiry</h1>
+    <p class="lead">We'll pass it to a checked local roofer the same working day. They'll call you to talk through the job and arrange a visit.</p>
+    <h2>While you wait</h2>
+    <ul>
+      <li>Have a think about when you're free for the roofer to visit.</li>
+      <li>If you can safely take photos of the problem from the ground, they help the roofer prepare.</li>
+      <li>Roof leaking? Here's <a href="/guides/roof-leaking-what-to-do/">what to do right now</a>.</li>
+    </ul>
+    <p>Anything urgent, call or text <a href={`tel:${SITE.phoneLink}`}><strong>{SITE.phoneDisplay}</strong></a>.</p>
+    <p><a class="btn btn-ghost" href="/guides/">Read our roofing cost guides</a></p>
+  </div>
+</BaseLayout>
+<style>
+  .box { padding-top: 48px; }
+  .lead { font-size: 1.15rem; }
+</style>

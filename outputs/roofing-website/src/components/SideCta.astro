@@ -1,0 +1,22 @@
+---
+import { SITE } from '../config';
+interface Props { job?: string }
+const href = Astro.props.job ? `/get-a-quote/?job=${Astro.props.job}` : '/get-a-quote/';
+---
+<aside class="side-cta card">
+  <p class="eyebrow">Free quote</p>
+  <p class="big">Get a price from a checked local roofer</p>
+  <ul class="tick-list small">
+    <li>Free, no obligation</li>
+    <li>Takes about a minute</li>
+    <li>Your details go to one roofer only</li>
+  </ul>
+  <a class="btn btn-primary" href={href}>Start my free quote</a>
+  <p class="small muted or">or call or text <a href={`tel:${SITE.phoneLink}`}>{SITE.phoneDisplay}</a></p>
+</aside>
+<style>
+  .side-cta { position: sticky; top: 92px; }
+  .big { font-size: 1.2rem; font-weight: 800; color: var(--slate); line-height: 1.3; }
+  .btn { width: 100%; }
+  .or { margin: 10px 0 0; text-align: center; }
+</style>

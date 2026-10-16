@@ -1,0 +1,28 @@
+---
+import JsonLd from './JsonLd.astro';
+import { faqPage } from '../lib/schema';
+interface Props { faqs: { q: string; a: string }[]; heading?: string }
+const { faqs, heading = 'Frequently asked questions' } = Astro.props;
+---
+{faqs.length > 0 && (
+  <section class="faq" aria-labelledby="faq-heading">
+    <h2 id="faq-heading">{heading}</h2>
+    {faqs.map((f) => (
+      <details>
+        <summary><h3>{f.q}</h3></summary>
+        <p>{f.a}</p>
+      </details>
+    ))}
+    <JsonLd data={faqPage(faqs)} />
+  </section>
+)}
+<style>
+  .faq { max-width: var(--read); }
+  details { background: #fff; border: 1px solid var(--line); border-radius: 10px; margin-bottom: 10px; }
+  summary { cursor: pointer; padding: 14px 44px 14px 18px; position: relative; list-style: none; }
+  summary::-webkit-details-marker { display: none; }
+  summary::after { content: '+'; position: absolute; right: 18px; top: 50%; transform: translateY(-50%); font-size: 1.5rem; color: var(--brand); font-weight: 400; }
+  details[open] summary::after { content: '–'; }
+  summary h3 { margin: 0; font-size: 1.05rem; display: inline; }
+  details p { margin: 0; padding: 0 18px 16px; }
+</style>

@@ -1,0 +1,12 @@
+---
+import { SITE } from '../config';
+---
+<div class="mobile-bar" role="region" aria-label="Quick contact">
+  <a class="btn btn-light" href={`tel:${SITE.phoneLink}`}>Call now</a>
+  <a class="btn btn-primary" href="/get-a-quote/">Free quote</a>
+</div>
+<style>
+  .mobile-bar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 60; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 10px 16px calc(10px + env(safe-area-inset-bottom)); background: var(--slate); }
+  .mobile-bar .btn { padding: 0.7em 1em; }
+  @media (min-width: 900px) { .mobile-bar { display: none; } }
+</style>

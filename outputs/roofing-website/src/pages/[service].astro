@@ -1,0 +1,36 @@
+---
+import { getCollection, render } from 'astro:content';
+import ContentPage from '../layouts/ContentPage.astro';
+import { service } from '../lib/schema';
+
+export async function getStaticPaths() {
+  const services = await getCollection('services');
+  return services.map((entry) => ({ params: { service: entry.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const d = entry.data;
+const path = `/${entry.id}/`;
+const guides = (await getCollection('guides')).filter((g) => g.data.relatedService === entry.id);
+---
+<ContentPage
+  title={d.title}
+  description={d.description}
+  h1={d.h1}
+  quickAnswer={d.quickAnswer}
+  faqs={d.faqs}
+  sources={d.sources}
+  updated={d.updated}
+  job={d.formValue}
+  crumbs={[{ name: d.h1.split(' in ')[0], path }]}
+  schema={[service({ name: d.h1, serviceType: d.serviceType, description: d.description, path })]}
+>
+  <Content />
+  {guides.length > 0 && (
+    <>
+      <h2>Related guides</h2>
+      <ul>{guides.map((g) => <li><a href={`/guides/${g.id}/`}>{g.data.h1}</a></li>)}</ul>
+    </>
+  )}
+</ContentPage>

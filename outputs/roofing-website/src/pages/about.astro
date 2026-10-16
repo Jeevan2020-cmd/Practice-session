@@ -1,0 +1,28 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { SITE } from '../config';
+---
+<BaseLayout
+  title={`About Us | ${SITE.name}`}
+  description={`${SITE.name} is a local, independent roofing quote service for Birmingham and Sutton Coldfield homeowners. One checked roofer, free and no obligation.`}
+>
+  <div class="wrap">
+    <Breadcrumbs items={[{ name: 'About', path: '/about/' }]} />
+    <div class="prose page-head">
+      <h1>About {SITE.name}</h1>
+      <p>Finding a good roofer is harder than it should be. Big quote websites often pass your number to several companies at once, and then the phone doesn't stop.</p>
+      <p>We do it differently. {SITE.name} is a small, independent service run locally for Birmingham and Sutton Coldfield. You tell us about the job, and we pass it to <strong>one</strong> roofing company we've checked, who covers your area.</p>
+      <h2>What we stand for</h2>
+      <ul class="tick-list">
+        <li><strong>Straight answers.</strong> Our <a href="/guides/">cost guides</a> give real price ranges, so you know roughly what to expect before anyone visits.</li>
+        <li><strong>No pressure.</strong> Quotes are free and you're never obliged to go ahead.</li>
+        <li><strong>Honesty about money.</strong> The roofer pays us a fee for the introduction. You pay us nothing.</li>
+        <li><strong>Your details stay private.</strong> One roofer, never sold on.</li>
+      </ul>
+      <p>Questions? Call or text <a href={`tel:${SITE.phoneLink}`}>{SITE.phoneDisplay}</a>.</p>
+    </div>
+  </div>
+  <CtaBand />
+</BaseLayout>

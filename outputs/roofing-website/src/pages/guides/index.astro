@@ -1,0 +1,36 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import CtaBand from '../../components/CtaBand.astro';
+
+const guides = (await getCollection('guides')).sort((a, b) => a.data.order - b.data.order);
+---
+<BaseLayout
+  title="Roofing cost guides & advice for Birmingham homeowners"
+  description="Plain-English roofing guides: what a new roof, repair or flat roof costs in 2026, planning rules, and what to do if your roof is leaking."
+>
+  <div class="wrap">
+    <Breadcrumbs items={[{ name: 'Guides', path: '/guides/' }]} />
+    <div class="page-head read">
+      <h1>Roofing cost guides &amp; advice</h1>
+      <p class="muted">Straight answers to the questions Birmingham and Sutton Coldfield homeowners ask most, with real 2026 price ranges.</p>
+    </div>
+    <div class="grid grid-2">
+      {guides.map((g) => (
+        <a class="card guide" href={`/guides/${g.id}/`}>
+          <h2>{g.data.h1}</h2>
+          <p class="muted">{g.data.quickAnswer.slice(0, 150).replace(/\s+\S*$/, '')}…</p>
+          <span class="more">Read the guide →</span>
+        </a>
+      ))}
+    </div>
+  </div>
+  <CtaBand />
+</BaseLayout>
+<style>
+  .guide { text-decoration: none; color: var(--ink); display: block; }
+  .guide:hover { border-color: var(--brand); }
+  .guide h2 { font-size: 1.2rem; margin: 0 0 8px; }
+  .more { font-weight: 700; color: var(--brand-dark); }
+</style>

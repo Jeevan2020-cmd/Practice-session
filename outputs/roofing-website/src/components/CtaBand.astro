@@ -1,0 +1,30 @@
+---
+import { SITE } from '../config';
+interface Props { heading?: string; text?: string; job?: string }
+const {
+  heading = 'Get a free, no-obligation roofing quote',
+  text = 'Tell us about the job in about a minute. We pass it to one checked local roofer the same working day.',
+  job,
+} = Astro.props;
+const href = job ? `/get-a-quote/?job=${job}` : '/get-a-quote/';
+---
+<section class="cta-band">
+  <div class="wrap inner">
+    <div>
+      <h2>{heading}</h2>
+      <p>{text}</p>
+    </div>
+    <div class="buttons">
+      <a class="btn btn-primary" href={href}>Start my free quote</a>
+      <a class="btn btn-light" href={`tel:${SITE.phoneLink}`}>Call {SITE.phoneDisplay}</a>
+    </div>
+  </div>
+</section>
+<style>
+  .cta-band { background: var(--slate); color: #e6ebf1; padding: 40px 0; margin-top: 56px; }
+  .inner { display: grid; gap: 20px; align-items: center; }
+  @media (min-width: 860px) { .inner { grid-template-columns: 1.5fr 1fr; } .buttons { justify-content: flex-end; } }
+  h2 { color: #fff; margin: 0 0 8px; }
+  p { margin: 0; }
+  .buttons { display: flex; flex-wrap: wrap; gap: 12px; }
+</style>

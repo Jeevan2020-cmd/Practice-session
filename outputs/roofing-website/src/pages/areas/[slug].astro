@@ -1,0 +1,31 @@
+---
+import { getCollection, render } from 'astro:content';
+import ContentPage from '../../layouts/ContentPage.astro';
+import { service } from '../../lib/schema';
+import { SERVICES } from '../../config';
+
+export async function getStaticPaths() {
+  const areas = await getCollection('areas');
+  return areas.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const d = entry.data;
+const path = `/areas/${entry.id}/`;
+---
+<ContentPage
+  title={d.title}
+  description={d.description}
+  h1={d.h1}
+  quickAnswer={d.quickAnswer}
+  faqs={d.faqs}
+  sources={d.sources}
+  updated={d.updated}
+  crumbs={[{ name: d.place, path }]}
+  schema={[service({ name: `Roofing quotes in ${d.place}`, serviceType: 'Roofing', description: d.description, path })]}
+>
+  <Content />
+  <h2>Roofing services in {d.place}</h2>
+  <ul>{SERVICES.map((s) => <li><a href={`/${s.slug}/`}>{s.name}</a>: {s.short}</li>)}</ul>
+</ContentPage>

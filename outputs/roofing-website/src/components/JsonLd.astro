@@ -1,0 +1,6 @@
+---
+// Prints one or more structured data blocks into the page.
+interface Props { data: object | object[] }
+const items = Array.isArray(Astro.props.data) ? Astro.props.data : [Astro.props.data];
+---
+{items.map((item) => <script type="application/ld+json" set:html={JSON.stringify(item)} />)}

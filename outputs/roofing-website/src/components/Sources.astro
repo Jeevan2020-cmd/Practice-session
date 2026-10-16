@@ -1,0 +1,21 @@
+---
+// Listing sources builds trust with readers, and AI assistants favour pages
+// that show where their facts come from.
+import { ukDate } from '../lib/schema';
+interface Props { sources: { label: string; url: string }[]; updated: Date }
+const { sources, updated } = Astro.props;
+---
+<section class="sources small">
+  <p><strong>Last reviewed:</strong> <time datetime={updated.toISOString().slice(0, 10)}>{ukDate(updated)}</time>.
+  Prices are typical ranges, not quotes. Your roofer will confirm the actual price after a survey.</p>
+  {sources.length > 0 && (
+    <>
+      <p><strong>Sources we checked:</strong></p>
+      <ul>{sources.map((s) => <li><a href={s.url} rel="nofollow noopener" target="_blank">{s.label}</a></li>)}</ul>
+    </>
+  )}
+</section>
+<style>
+  .sources { max-width: var(--read); margin-top: 40px; padding: 16px 20px; border: 1px dashed var(--line); border-radius: var(--radius); color: var(--ink-soft); background: #fff; }
+  ul { margin: 0; padding-left: 1.2em; }
+</style>

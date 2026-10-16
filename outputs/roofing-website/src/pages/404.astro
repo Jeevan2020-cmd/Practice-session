@@ -1,0 +1,15 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE, SERVICES } from '../config';
+---
+<BaseLayout title={`Page not found | ${SITE.name}`} description="Sorry, we couldn't find that page." noindex>
+  <div class="wrap read" style="padding-top:48px">
+    <h1>Sorry, we can't find that page</h1>
+    <p>Try one of these instead:</p>
+    <ul>
+      <li><a href="/get-a-quote/">Get a free roofing quote</a></li>
+      {SERVICES.map((s) => <li><a href={`/${s.slug}/`}>{s.name}</a></li>)}
+      <li><a href="/guides/">Roofing cost guides</a></li>
+    </ul>
+  </div>
+</BaseLayout>

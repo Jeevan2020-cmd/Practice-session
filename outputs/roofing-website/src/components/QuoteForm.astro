@@ -1,0 +1,260 @@
+---
+// Multi-step quote form. Short steps feel quicker to fill in than one long
+// form, and each answer helps qualify the lead: what the job is, how urgent,
+// whether they own the property and whether they're in the area.
+//
+// Without JavaScript, every step shows at once and the form still posts.
+import { SITE } from '../config';
+
+const jobs = [
+  { value: 'repair', label: 'Roof repair or leak' },
+  { value: 'new-roof', label: 'New roof or replacement' },
+  { value: 'flat-roof', label: 'Flat roof' },
+  { value: 'roofline', label: 'Guttering, fascias or soffits' },
+  { value: 'chimney', label: 'Chimney or lead flashing' },
+  { value: 'not-sure', label: 'Not sure yet' },
+];
+const urgency = [
+  { value: 'emergency', label: 'Emergency: it is leaking now' },
+  { value: '2-weeks', label: 'Within 2 weeks' },
+  { value: '1-3-months', label: 'Within 1 to 3 months' },
+  { value: 'planning', label: 'Just getting prices for now' },
+];
+const property = ['Detached', 'Semi-detached', 'Terraced', 'Bungalow', 'Flat or maisonette', 'Commercial'];
+const owner = [
+  { value: 'homeowner', label: 'I own the property' },
+  { value: 'landlord', label: "I'm the landlord" },
+  { value: 'tenant', label: "I'm a tenant" },
+  { value: 'business', label: 'I manage a business property' },
+];
+---
+<form class="quote-form" id="quote-form" method="post" action={SITE.leadEndpoint || '#'} data-endpoint={SITE.leadEndpoint} novalidate>
+  <div class="progress" aria-hidden="true"><span></span></div>
+  <p class="step-count small muted" aria-live="polite"></p>
+
+  <fieldset class="step" data-step="1">
+    <legend>What do you need help with?</legend>
+    <div class="options">
+      {jobs.map((j) => (
+        <label class="option"><input type="radio" name="job" value={j.value} required /> <span>{j.label}</span></label>
+      ))}
+    </div>
+  </fieldset>
+
+  <fieldset class="step" data-step="2">
+    <legend>A few quick details</legend>
+    <p class="q">How soon do you need the work done?</p>
+    <div class="options">
+      {urgency.map((u) => (
+        <label class="option"><input type="radio" name="urgency" value={u.value} required /> <span>{u.label}</span></label>
+      ))}
+    </div>
+    <p class="q">What type of property is it?</p>
+    <div class="options options-3">
+      {property.map((p) => (
+        <label class="option"><input type="radio" name="property" value={p} required /> <span>{p}</span></label>
+      ))}
+    </div>
+    <p class="q">Are you the owner?</p>
+    <div class="options">
+      {owner.map((o) => (
+        <label class="option"><input type="radio" name="owner" value={o.value} required /> <span>{o.label}</span></label>
+      ))}
+    </div>
+    <p class="note tenant-note" hidden>No problem. Most repairs on rented homes are the landlord's responsibility, so it's worth letting them know too. We'll still pass on your enquiry.</p>
+  </fieldset>
+
+  <fieldset class="step" data-step="3">
+    <legend>Where is the property?</legend>
+    <label class="field">
+      <span>Postcode</span>
+      <input type="text" name="postcode" autocomplete="postal-code" inputmode="text" maxlength="9" placeholder="e.g. B73 5AA" required />
+    </label>
+    <p class="note area-note" hidden>We mainly cover Birmingham and Sutton Coldfield, but send it through and we'll check whether a roofer can help.</p>
+    <label class="field">
+      <span>Tell us about the job <em class="muted">(optional, but it helps the roofer give a more accurate price)</em></span>
+      <textarea name="details" rows="4" maxlength="1000" placeholder="e.g. Water coming through the bedroom ceiling after the storm. Two-storey semi, tiled roof."></textarea>
+    </label>
+  </fieldset>
+
+  <fieldset class="step" data-step="4">
+    <legend>Where should the roofer contact you?</legend>
+    <label class="field"><span>Your name</span><input type="text" name="name" autocomplete="name" maxlength="80" required /></label>
+    <label class="field"><span>Phone number</span><input type="tel" name="phone" autocomplete="tel" maxlength="20" placeholder="e.g. 07700 900123" required /></label>
+    <label class="field"><span>Email <em class="muted">(optional)</em></span><input type="email" name="email" autocomplete="email" maxlength="120" /></label>
+    <label class="field">
+      <span>Best time to call</span>
+      <select name="call_time">
+        <option>Any time</option><option>Morning</option><option>Afternoon</option><option>Evening</option>
+      </select>
+    </label>
+    <label class="consent">
+      <input type="checkbox" name="consent" value="yes" required />
+      <span>I agree to {SITE.name} sharing my details with one local roofing company so they can contact me about a quote. See our <a href="/privacy/" target="_blank">privacy policy</a>.</span>
+    </label>
+  </fieldset>
+
+  <!-- Spam trap: hidden from people, but bots tend to fill it in. -->
+  <div class="hp" aria-hidden="true">
+    <label>Leave this empty <input type="text" name="website" tabindex="-1" autocomplete="off" /></label>
+  </div>
+  <input type="hidden" name="started_at" value="" />
+  <input type="hidden" name="page" value="" />
+  <input type="hidden" name="referrer" value="" />
+
+  <p class="error" role="alert" hidden></p>
+
+  <div class="nav">
+    <button type="button" class="btn btn-ghost back" hidden>Back</button>
+    <button type="button" class="btn btn-primary next">Next</button>
+    <button type="submit" class="btn btn-primary submit">Get my free quote</button>
+  </div>
+  <p class="small muted reassure">Free and no obligation. We only share your details with one roofer, never sold on.</p>
+</form>
+
+<style>
+  .quote-form { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 22px; box-shadow: var(--shadow); max-width: 640px; }
+  .progress { height: 6px; background: var(--brand-tint); border-radius: 99px; overflow: hidden; margin-bottom: 8px; }
+  .progress span { display: block; height: 100%; width: 25%; background: var(--brand); transition: width 0.25s; }
+  fieldset { border: 0; padding: 0; margin: 0 0 18px; }
+  legend { font-size: 1.3rem; font-weight: 800; color: var(--slate); margin-bottom: 12px; padding: 0; }
+  .q { font-weight: 700; margin: 16px 0 8px; }
+  .options { display: grid; gap: 10px; }
+  @media (min-width: 560px) { .options { grid-template-columns: 1fr 1fr; } .options-3 { grid-template-columns: 1fr 1fr 1fr; } }
+  .option { display: flex; align-items: center; gap: 10px; border: 2px solid var(--line); border-radius: 10px; padding: 12px 14px; cursor: pointer; font-weight: 600; background: #fff; }
+  .option:hover { border-color: var(--brand); }
+  .option:has(input:checked) { border-color: var(--brand); background: var(--brand-tint); }
+  .option input { accent-color: var(--brand); width: 18px; height: 18px; flex: none; }
+  .field { display: block; margin-bottom: 14px; }
+  .field > span { display: block; font-weight: 700; margin-bottom: 6px; }
+  .field em { font-weight: 400; font-style: normal; }
+  input[type='text'], input[type='tel'], input[type='email'], textarea, select {
+    width: 100%; font: inherit; padding: 12px 14px; border: 2px solid var(--line); border-radius: 10px; background: #fff; color: var(--ink);
+  }
+  input:focus, textarea:focus, select:focus { border-color: var(--brand); outline: none; }
+  .consent { display: flex; gap: 10px; align-items: flex-start; font-size: 0.95rem; }
+  .consent input { margin-top: 5px; width: 18px; height: 18px; accent-color: var(--brand); flex: none; }
+  .note { background: var(--brand-tint); border-radius: 8px; padding: 10px 12px; font-size: 0.95rem; margin-top: 12px; }
+  .error { color: #a61b1b; font-weight: 700; }
+  .nav { display: flex; gap: 12px; justify-content: space-between; }
+  .nav .next, .nav .submit { margin-left: auto; }
+  .reassure { margin: 12px 0 0; }
+  .hp { position: absolute; left: -5000px; width: 1px; height: 1px; overflow: hidden; }
+  /* Before JavaScript runs, show everything as one long form. */
+  .quote-form:not(.js) .next, .quote-form:not(.js) .back, .quote-form:not(.js) .progress { display: none; }
+  .quote-form.js .step:not(.active) { display: none; }
+</style>
+
+<script>
+  const form = document.getElementById('quote-form') as HTMLFormElement | null;
+  if (form) {
+    const steps = Array.from(form.querySelectorAll<HTMLFieldSetElement>('.step'));
+    const next = form.querySelector<HTMLButtonElement>('.next')!;
+    const back = form.querySelector<HTMLButtonElement>('.back')!;
+    const submit = form.querySelector<HTMLButtonElement>('.submit')!;
+    const bar = form.querySelector<HTMLSpanElement>('.progress span')!;
+    const count = form.querySelector<HTMLParagraphElement>('.step-count')!;
+    const error = form.querySelector<HTMLParagraphElement>('.error')!;
+    const areaNote = form.querySelector<HTMLParagraphElement>('.area-note')!;
+    const tenantNote = form.querySelector<HTMLParagraphElement>('.tenant-note')!;
+    let current = 0;
+
+    form.classList.add('js');
+    (form.elements.namedItem('started_at') as HTMLInputElement).value = String(Date.now());
+    (form.elements.namedItem('page') as HTMLInputElement).value = location.href;
+    (form.elements.namedItem('referrer') as HTMLInputElement).value = document.referrer;
+
+    // Pre-select the job type when arriving from a service page, e.g. ?job=flat-roof
+    const preset = new URLSearchParams(location.search).get('job');
+    const presetInput = preset && form.querySelector<HTMLInputElement>(`input[name="job"][value="${CSS.escape(preset)}"]`);
+    if (presetInput) presetInput.checked = true;
+
+    const ukPostcode = /^[A-Z]{1,2}\d[A-Z\d]?\s*\d[A-Z]{2}$/i;
+    const inArea = (pc: string) => {
+      // Outward code = everything except the last 3 characters ("B9" from "B9 4AA").
+      const m = pc.toUpperCase().replace(/\s+/g, '').slice(0, -3).match(/^B(\d{1,2})$/);
+      if (!m) return false;
+      const n = Number(m[1]);
+      return (n >= 1 && n <= 48) || (n >= 72 && n <= 76);
+    };
+
+    function show(i: number) {
+      current = i;
+      steps.forEach((s, idx) => s.classList.toggle('active', idx === i));
+      back.hidden = i === 0;
+      next.hidden = i === steps.length - 1;
+      submit.hidden = i !== steps.length - 1;
+      bar.style.width = `${((i + 1) / steps.length) * 100}%`;
+      count.textContent = `Step ${i + 1} of ${steps.length}`;
+      error.hidden = true;
+    }
+
+    function stepError(step: HTMLFieldSetElement): string | null {
+      for (const name of new Set(Array.from(step.querySelectorAll<HTMLInputElement>('input[type=radio][required]')).map((r) => r.name))) {
+        if (!step.querySelector(`input[name="${name}"]:checked`)) return 'Please choose an option for each question.';
+      }
+      const pc = step.querySelector<HTMLInputElement>('input[name="postcode"]');
+      if (pc && !ukPostcode.test(pc.value.trim())) return 'Please enter a full UK postcode, for example B73 5AA.';
+      const name = step.querySelector<HTMLInputElement>('input[name="name"]');
+      if (name && name.value.trim().length < 2) return 'Please enter your name.';
+      const phone = step.querySelector<HTMLInputElement>('input[name="phone"]');
+      if (phone && phone.value.replace(/[^\d]/g, '').length < 10) return 'Please enter a phone number so the roofer can reach you.';
+      const email = step.querySelector<HTMLInputElement>('input[name="email"]');
+      if (email && email.value && !email.checkValidity()) return 'That email address doesn’t look right.';
+      const consent = step.querySelector<HTMLInputElement>('input[name="consent"]');
+      if (consent && !consent.checked) return 'Please tick the box so we can pass your details to the roofer.';
+      return null;
+    }
+
+    function fail(message: string) {
+      error.textContent = message;
+      error.hidden = false;
+    }
+
+    // Selecting an answer on step 1 moves straight on: one less click.
+    steps[0].addEventListener('change', () => show(1));
+    form.addEventListener('change', (e) => {
+      const t = e.target as HTMLInputElement;
+      if (t.name === 'owner') tenantNote.hidden = t.value !== 'tenant';
+    });
+    form.querySelector<HTMLInputElement>('input[name="postcode"]')!.addEventListener('blur', (e) => {
+      const v = (e.target as HTMLInputElement).value.trim();
+      areaNote.hidden = !v || !ukPostcode.test(v) || inArea(v);
+    });
+
+    next.addEventListener('click', () => {
+      const msg = stepError(steps[current]);
+      if (msg) return fail(msg);
+      show(current + 1);
+      steps[current].querySelector('legend')?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    });
+    back.addEventListener('click', () => show(current - 1));
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const msg = stepError(steps[current]);
+      if (msg) return fail(msg);
+
+      const endpoint = form.dataset.endpoint;
+      if (!endpoint) {
+        return fail('Sorry, our form isn’t working right now. Please call or text us on the number at the top of the page.');
+      }
+
+      submit.disabled = true;
+      submit.textContent = 'Sending…';
+      try {
+        // "no-cors" lets the browser send to Google Apps Script without a
+        // cross-site permission check. We can't read the reply, but the lead
+        // is still saved. A network failure still lands in the catch below.
+        await fetch(endpoint, { method: 'POST', mode: 'no-cors', body: new URLSearchParams(new FormData(form) as any) });
+        location.href = '/thank-you/';
+      } catch {
+        submit.disabled = false;
+        submit.textContent = 'Get my free quote';
+        fail('Sorry, that didn’t send. Please check your connection and try again, or call or text us.');
+      }
+    });
+
+    show(presetInput ? 1 : 0);
+  }
+</script>

@@ -1,0 +1,28 @@
+# Search engines and AI assistants are welcome to read this site.
+# Being readable by AI search tools (ChatGPT, Perplexity, Claude, Gemini)
+# is part of the site's AEO strategy, so nothing is blocked here.
+User-agent: *
+Allow: /
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+Sitemap: https://birminghamroofquotes.co.uk/sitemap-index.xml

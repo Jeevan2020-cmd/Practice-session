@@ -1,0 +1,36 @@
+---
+import { getCollection, render } from 'astro:content';
+import ContentPage from '../../layouts/ContentPage.astro';
+import { article, ukDate } from '../../lib/schema';
+import { SERVICES } from '../../config';
+
+export async function getStaticPaths() {
+  const guides = await getCollection('guides');
+  return guides.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const d = entry.data;
+const path = `/guides/${entry.id}/`;
+const related = SERVICES.find((s) => s.slug === d.relatedService);
+---
+<ContentPage
+  title={d.title}
+  description={d.description}
+  h1={d.h1}
+  quickAnswer={d.quickAnswer}
+  faqs={d.faqs}
+  sources={d.sources}
+  updated={d.updated}
+  job={related?.formValue}
+  ogType="article"
+  crumbs={[{ name: 'Guides', path: '/guides/' }, { name: d.h1, path }]}
+  schema={[article({ headline: d.h1, description: d.description, path, published: d.published, updated: d.updated })]}
+>
+  <p class="small muted">Updated {ukDate(d.updated)}</p>
+  <Content />
+  {related && (
+    <p><strong>Need this done?</strong> See <a href={`/${related.slug}/`}>{related.name.toLowerCase()} in Birmingham</a> or <a href={`/get-a-quote/?job=${related.formValue}`}>get a free quote</a>.</p>
+  )}
+</ContentPage>

@@ -1,0 +1,172 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import QuickAnswer from '../components/QuickAnswer.astro';
+import Faq from '../components/Faq.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { SITE, SERVICES } from '../config';
+import { service } from '../lib/schema';
+
+const faqs = [
+  {
+    q: 'Is the quote really free?',
+    a: `Yes. Getting a quote through ${SITE.name} costs you nothing and there's no obligation to go ahead. We're paid a fee by the roofing company, not by you.`,
+  },
+  {
+    q: 'How quickly will a roofer contact me?',
+    a: 'We pass your enquiry to the roofer the same working day. For emergencies, such as water coming through a ceiling, call or text us and we will flag it as urgent.',
+  },
+  {
+    q: 'Will lots of roofers call me?',
+    a: 'No. Unlike many quote websites, we pass your details to one local roofer only. Your details are never sold on to other companies.',
+  },
+  {
+    q: 'Which areas do you cover?',
+    a: 'Birmingham and Sutton Coldfield, which covers most B postcodes from B1 to B48 and B72 to B76, including Four Oaks, Boldmere, Wylde Green, Walmley, Mere Green, Erdington and Kingstanding. If you are just outside, send your enquiry anyway and we will check.',
+  },
+  {
+    q: 'What roofing work can I get a quote for?',
+    a: 'Roof repairs and leaks, full roof replacements, flat roofs (EPDM rubber, GRP fibreglass and felt), guttering, fascias and soffits, and chimney repairs including lead flashing.',
+  },
+  {
+    q: 'Do I have to accept the quote?',
+    a: 'No. The quote is free and there is no obligation. You deal with the roofer directly and only go ahead if you are happy with the price and the plan.',
+  },
+];
+
+const costs = [
+  ['Replace a few slipped or cracked tiles', '£150 – £500', '/guides/roof-repair-cost/'],
+  ['New roof, mid-terrace (concrete tiles)', '£4,500 – £8,000', '/guides/new-roof-cost-birmingham/'],
+  ['New roof, 3-bed semi (concrete tiles)', '£6,000 – £11,500', '/guides/new-roof-cost-birmingham/'],
+  ['New flat roof, single garage (15–20m²)', '£1,200 – £3,000', '/guides/flat-roof-cost-felt-epdm-grp/'],
+  ['Fascias, soffits & gutters, 3-bed semi (uPVC)', '£1,800 – £3,500', '/guides/fascias-soffits-guttering-cost/'],
+];
+
+const icons: Record<string, string> = {
+  'roof-repairs': 'M4 20h16M6 20V11l6-5 6 5v9M10 14l4 4M14 14l-4 4',
+  'new-roofs': 'M3 12 12 4l9 8M6 10v10h12V10',
+  'flat-roofs': 'M3 9h18M5 9v11h14V9M3 9l2-3h14l2 3',
+  'guttering-fascias-chimneys': 'M4 8h16v3H4zM6 11v9M18 11v9M15 4h3v4h-3z',
+};
+---
+<BaseLayout
+  title="Roofing Quotes Birmingham & Sutton Coldfield | Free & Local"
+  description={SITE.description}
+  schema={[service({ name: 'Roofing quotes in Birmingham and Sutton Coldfield', serviceType: 'Roofing', description: SITE.description, path: '/' })]}
+>
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <p class="eyebrow">Birmingham &amp; Sutton Coldfield</p>
+        <h1>Free roofing quotes from a checked local roofer</h1>
+        <p class="lead">Leaking roof, new roof, flat roof or guttering? Tell us about the job in about a minute.
+          We pass it to <strong>one</strong> trusted local roofer the same working day, so you won't get five phone calls.</p>
+        <p class="pick">What do you need?</p>
+        <div class="quick-jobs">
+          {SERVICES.map((s) => <a class="job" href={`/get-a-quote/?job=${s.formValue}`}>{s.name}</a>)}
+        </div>
+        <p class="call">Prefer to talk? <a href={`tel:${SITE.phoneLink}`}>Call or text {SITE.phoneDisplay}</a></p>
+      </div>
+      <ul class="hero-points card">
+        <li><strong>Free &amp; no obligation.</strong> The roofer pays us, not you.</li>
+        <li><strong>One roofer, not a bidding war.</strong> Your details are never sold on.</li>
+        <li><strong>Local.</strong> Birmingham B1–B48 and Sutton Coldfield B72–B76.</li>
+        <li><strong>Fast.</strong> Enquiries passed on the same working day. Emergencies flagged as urgent.</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <div class="intro">
+      <QuickAnswer
+        label="In short"
+        text={`${SITE.name} is a free roofing quote service for homeowners in Birmingham and Sutton Coldfield. You describe the job, and we pass your enquiry to one checked local roofing company, which contacts you to arrange a free survey and written quote. There's no charge and no obligation.`}
+      />
+    </div>
+
+    <section id="services" aria-labelledby="services-h">
+      <h2 id="services-h">Roofing services we can get you quotes for</h2>
+      <div class="grid grid-4">
+        {SERVICES.map((s) => (
+          <a class="card svc" href={`/${s.slug}/`}>
+            <svg viewBox="0 0 24 24" width="36" height="36" aria-hidden="true"><path d={icons[s.slug]} fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" /></svg>
+            <h3>{s.name}</h3>
+            <p class="muted small">{s.short}</p>
+            <span class="more">See prices &amp; details →</span>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <section aria-labelledby="how-h">
+      <h2 id="how-h">How it works</h2>
+      <ol class="steps">
+        <li><strong>Tell us about the job.</strong> Four quick steps: what you need, how urgent it is, your postcode and how to reach you.</li>
+        <li><strong>We pass it to one local roofer.</strong> Same working day, with all the details, so they can call you prepared.</li>
+        <li><strong>Get your free quote.</strong> The roofer arranges a survey and gives you a written price. You decide whether to go ahead.</li>
+      </ol>
+      <p><a href="/how-it-works/">More about how it works and the checks we make →</a></p>
+    </section>
+
+    <section aria-labelledby="cost-h" class="prose costs">
+      <h2 id="cost-h">How much does roofing cost in Birmingham? (2026)</h2>
+      <p>Typical price ranges for common jobs, including VAT. Scaffolding is often extra, at roughly £500 to £1,200 for a two-storey house.</p>
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th scope="col">Job</th><th scope="col">Typical cost</th><th scope="col">Guide</th></tr></thead>
+          <tbody>
+            {costs.map(([job, price, link]) => <tr><td>{job}</td><td><strong>{price}</strong></td><td><a href={link}>Full breakdown</a></td></tr>)}
+          </tbody>
+        </table>
+      </div>
+      <p class="small muted">Ranges are based on 2026 UK price guides. Birmingham prices usually sit within these ranges; London and the South East typically run 20 to 30% higher. Your roofer will confirm the real price after a survey.</p>
+    </section>
+
+    <section aria-labelledby="areas-h">
+      <h2 id="areas-h">Areas we cover</h2>
+      <div class="grid grid-2">
+        <div class="card">
+          <h3><a href="/areas/sutton-coldfield/">Sutton Coldfield</a></h3>
+          <p class="muted">Four Oaks, Mere Green, Boldmere, Wylde Green, Walmley, Falcon Lodge, Maney, Minworth and New Oscott (B72 to B76).</p>
+          <p><a href="/areas/four-oaks/">Roofing in Four Oaks, including the conservation area →</a></p>
+        </div>
+        <div class="card">
+          <h3>Birmingham</h3>
+          <p class="muted">Erdington, Kingstanding, Great Barr, Perry Barr, Handsworth, Moseley, Kings Heath, Hall Green, Harborne, Selly Oak, Northfield, Yardley, Acocks Green and the rest of the city (B1 to B48).</p>
+        </div>
+      </div>
+    </section>
+
+    <Faq faqs={faqs} />
+  </div>
+
+  <CtaBand />
+</BaseLayout>
+
+<style>
+  .hero { background: linear-gradient(180deg, #fff 0%, var(--paper) 100%); border-bottom: 1px solid var(--line); padding: 40px 0 48px; }
+  .hero-grid { display: grid; gap: 28px; align-items: center; }
+  @media (min-width: 960px) { .hero-grid { grid-template-columns: 1.4fr 1fr; gap: 48px; } }
+  .lead { font-size: 1.15rem; max-width: 36em; }
+  .pick { font-weight: 800; margin: 22px 0 10px; }
+  .quick-jobs { display: grid; gap: 10px; }
+  @media (min-width: 560px) { .quick-jobs { grid-template-columns: 1fr 1fr; } }
+  .job { display: block; background: var(--brand); color: #fff; text-decoration: none; font-weight: 700; padding: 14px 16px; border-radius: 10px; }
+  .job::after { content: ' →'; }
+  .job:hover { background: var(--brand-dark); color: #fff; }
+  .call { margin-top: 16px; font-weight: 600; }
+  .hero-points { list-style: none; margin: 0; padding: 22px; }
+  .hero-points li { padding: 10px 0 10px 30px; border-bottom: 1px solid var(--line); position: relative; }
+  .hero-points li:last-child { border-bottom: 0; }
+  .hero-points li::before { content: '✓'; position: absolute; left: 0; top: 9px; color: var(--good); font-weight: 900; }
+  .intro { padding-top: 40px; }
+  .svc { text-decoration: none; color: var(--ink); display: block; }
+  .svc:hover { border-color: var(--brand); }
+  .svc svg { color: var(--brand); }
+  .svc h3 { margin: 8px 0 6px; }
+  .more { font-weight: 700; color: var(--brand-dark); font-size: 0.95rem; }
+  .steps { counter-reset: s; list-style: none; padding: 0; display: grid; gap: 14px; max-width: var(--read); }
+  .steps li { counter-increment: s; position: relative; padding: 16px 16px 16px 64px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius); }
+  .steps li::before { content: counter(s); position: absolute; left: 16px; top: 14px; width: 34px; height: 34px; border-radius: 50%; background: var(--slate); color: #fff; display: grid; place-content: center; font-weight: 800; }
+  .costs { max-width: 820px; }
+  section { scroll-margin-top: 80px; }
+</style>

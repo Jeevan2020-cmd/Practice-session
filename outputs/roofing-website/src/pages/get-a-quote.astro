@@ -1,0 +1,36 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import QuoteForm from '../components/QuoteForm.astro';
+import { SITE } from '../config';
+---
+<BaseLayout
+  title="Get a Free Roofing Quote | Birmingham & Sutton Coldfield"
+  description="Tell us about your roofing job in about a minute. We pass it to one checked local roofer in Birmingham or Sutton Coldfield the same working day. Free, no obligation."
+>
+  <div class="wrap layout">
+    <div>
+      <h1>Get a free roofing quote</h1>
+      <p class="muted">Four quick steps. We pass your enquiry to one checked local roofer, never a crowd.</p>
+      <QuoteForm />
+    </div>
+    <aside class="next card">
+      <h2>What happens next</h2>
+      <ol>
+        <li>We check your enquiry and pass it to a local roofer the same working day.</li>
+        <li>The roofer calls you to talk it through and arrange a visit.</li>
+        <li>You get a written quote. No obligation to go ahead.</li>
+      </ol>
+      <h2>Roof leaking right now?</h2>
+      <p>Call or text <a href={`tel:${SITE.phoneLink}`}><strong>{SITE.phoneDisplay}</strong></a> and say it's urgent. Meanwhile, see <a href="/guides/roof-leaking-what-to-do/">what to do while you wait</a>.</p>
+    </aside>
+  </div>
+</BaseLayout>
+<style>
+  .layout { display: grid; gap: 32px; padding-top: 36px; }
+  @media (min-width: 1000px) { .layout { grid-template-columns: minmax(0, 640px) 1fr; gap: 48px; } }
+  h1 { margin-bottom: 0.2em; }
+  .next h2 { font-size: 1.15rem; margin: 0 0 10px; }
+  .next h2:not(:first-child) { margin-top: 24px; }
+  .next ol { padding-left: 1.2em; margin: 0; }
+  .next li { margin-bottom: 8px; }
+</style>

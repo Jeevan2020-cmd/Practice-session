@@ -1,0 +1,52 @@
+---
+// Shared layout for service, area and guide pages: breadcrumb, H1, quick
+// answer, the main content with a sticky quote box, then FAQs and sources.
+import BaseLayout from './BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import QuickAnswer from '../components/QuickAnswer.astro';
+import Faq from '../components/Faq.astro';
+import Sources from '../components/Sources.astro';
+import SideCta from '../components/SideCta.astro';
+import CtaBand from '../components/CtaBand.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  h1: string;
+  quickAnswer: string;
+  faqs: { q: string; a: string }[];
+  sources: { label: string; url: string }[];
+  updated: Date;
+  crumbs: { name: string; path: string }[];
+  schema?: object[];
+  job?: string;
+  ogType?: 'website' | 'article';
+}
+const p = Astro.props;
+---
+<BaseLayout title={p.title} description={p.description} schema={p.schema} ogType={p.ogType}>
+  <div class="wrap">
+    <Breadcrumbs items={p.crumbs} />
+    <div class="page-head"><h1>{p.h1}</h1></div>
+    <QuickAnswer text={p.quickAnswer} />
+    <div class="layout">
+      <article class="prose">
+        <slot />
+        <Faq faqs={p.faqs} />
+        <Sources sources={p.sources} updated={p.updated} />
+      </article>
+      <div class="side"><SideCta job={p.job} /></div>
+    </div>
+    <slot name="after" />
+  </div>
+  <CtaBand job={p.job} />
+</BaseLayout>
+<style>
+  .layout { display: grid; gap: 32px; }
+  .side { display: none; }
+  @media (min-width: 1000px) {
+    .layout { grid-template-columns: minmax(0, 1fr) 300px; gap: 48px; }
+    .side { display: block; }
+  }
+  .prose :global(h2:first-child) { margin-top: 0.5em; }
+</style>

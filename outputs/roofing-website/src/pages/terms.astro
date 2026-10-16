@@ -1,0 +1,26 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { SITE } from '../config';
+import { ukDate } from '../lib/schema';
+---
+<BaseLayout title={`Terms of Use | ${SITE.name}`} description={`The terms for using ${SITE.name}, a free roofing quote introduction service.`}>
+  <div class="wrap">
+    <Breadcrumbs items={[{ name: 'Terms', path: '/terms/' }]} />
+    <div class="prose page-head">
+      <h1>Terms of use</h1>
+      <p class="muted">Last updated {ukDate(new Date(SITE.lastReviewed))}</p>
+      <h2>What we do</h2>
+      <p>{SITE.name}{SITE.operatorName && ` (run by ${SITE.operatorName})`} is a free introduction service. We pass your enquiry to a local roofing company, which contacts you to arrange a quote. We are not a roofing contractor and we don't carry out any work.</p>
+      <h2>Your contract is with the roofer</h2>
+      <p>If you accept a quote, your contract is directly with the roofing company. They're responsible for the work, its quality, any guarantee and any insurance. Check the quote, guarantee and payment terms carefully before you agree to anything.</p>
+      <p>If you sign a contract in your own home, you normally have 14 days to cancel under UK consumer law. Ask the roofer to explain your cancellation rights.</p>
+      <h2>It's free for you</h2>
+      <p>We don't charge you anything. The roofing company pays us a fee for introductions.</p>
+      <h2>Information on this website</h2>
+      <p>Our guides and price ranges are general information to help you understand typical costs. They aren't quotes and they aren't professional advice for your specific roof. Prices depend on the job, so always get a written quote after a survey.</p>
+      <h2>Contact</h2>
+      <p>Call or text <a href={`tel:${SITE.phoneLink}`}>{SITE.phoneDisplay}</a>.</p>
+    </div>
+  </div>
+</BaseLayout>
